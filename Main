@@ -1,6 +1,14 @@
+local teleport_table = {
+    ["Sunflower Field"] = Vector3.new(-208.951294, 1.5, 176.579224, 1,0, 0, 0, 1, 0, 0, 0, 1)
+}
+
+local tween_s = game:GetService('TweenService')
+local tweeninfo = TweenInfo.new(2.3,Enum.EasingStyle.Linear)
+
+local lp = game.Players.LocalPlayer
+
 getgenv().SecureMode = true
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
-
 
 local Window = Rayfield:CreateWindow({
    Name = "Sun Hub | v1.0.0.0",
@@ -45,25 +53,38 @@ Rayfield:Notify({
 
 local AutoFarmTab = Window:CreateTab("AutoFarm", 4483362458) -- Title, Image
 local Section = AutoFarmTab:CreateSection("Choose A Field!")
+_G.Type = "Sunflower Field"
 local Dropdown = AutoFarmTab:CreateDropdown({
    Name = "Choose A Field You Want To AutoFarm In.",
    Options = {"Sunflower Field","Dandelion Field","Mushroom Field","Clover Field","Blue Flower Field"},
    CurrentOption = "Sunflower Field",
    Flag = "Dropdown1", 
-   Callback = function(Option)
-
-
+   Callback = function(key)
+       _G.Type = key
    end,
 })
 
-   local Toggle = AutoFarmTab:CreateToggle({
-   Name = "Auto Farm 🛠️",
-   CurrentValue = false,
-   Flag = "Toggle1",
-   Callback = function(Option)
+  _G.Type = "Sunflower Field"
 
+AutoFarmTab:CreateToggle({
+  Name = "Auto Farm 🛠️",
+  CurrentValue = false,
+  Flag = "Auto Farm",
 
-   end,
+  Callback = function(key)
+      _G.Type = key
+    local Character = lp.Character
+    local Hrp = Character:FindFirstChild"HumanoidRootPart"
+    if key then
+      if Character and Hrp then
+          local goal = {
+            teleport_table[_G.Type]
+          }
+           local tween = tween_s:Create(Hrp, tweeninfo, goal)
+           tween:Play()
+        end
+      end
+  end,
 })
 
    local SprinklerToggle = AutoFarmTab:CreateToggle({
