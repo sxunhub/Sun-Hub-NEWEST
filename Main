@@ -102,13 +102,13 @@ local Slider = MiscTab:CreateSlider({
 
 local JumpSlider = MiscTab:CreateSlider({
     Name = "Change Jump Height",
-    Range = {16, 80},
+    Range = {6, 30},
     Increment = 1,
     Suffix = "Jump Height",
-    CurrentValue = 16,
+    CurrentValue = 6,
     Flag = "Slider2",
     Callback = function(JumpValue)
-        game.Players.LocalPlayer.Character.Humanoid.JumpPower = JumpValue
+        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpValue
 
     end,
  })
