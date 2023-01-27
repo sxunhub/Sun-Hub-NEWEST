@@ -1,4 +1,5 @@
 getgenv().SecureMode = true
+local api = loadstring(game:HttpGet("https://raw.githubusercontent.com/kometa-anon/kometa/main/api/api.lua"))()
 local lib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 local Window = lib:CreateWindow({
    Name = "Sun Hub | v1.0.0.0",
@@ -166,13 +167,16 @@ local Farm = Tab:CreateToggle({
 
 local AutoDig = Tab:CreateToggle({
    Name = "Auto Dig",
-   CurrentValue = _G.FARM.state,
+   CurrentValue = false,
    Flag = "AutoDig",
    Callback = function(state)
-              if game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool'):FindFirstChild('ClientScriptMouse') then
-            pcall(function(state)getgenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart()end)
-         end 
-    end
+       if CurrentValue == true then
+                   if game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool'):FindFirstChild('ClientScriptMouse') then
+            pcall(function()getsenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart()
+             end)
+          end
+       end
+ end,
 })
 
 local AutoSprinkler = Tab:CreateToggle({
@@ -194,14 +198,16 @@ local AvoidMobs = CombatTab:CreateToggle({
    CurrentValue = false,
    Flag = "AvoidMobs",
    Callback = function(state)
+       if CurrentValue == true then
        function avoidmob()
     for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
         if v:FindFirstChild("Head") then
-            if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and api.humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+            if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and Character.humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
                 game.Players.LocalPlayer.Character.Humanoid.Jump = true
             end
          end
       end
+    end
    end
  end,
 })
