@@ -46,7 +46,10 @@ _G.TELEPORT = {
    ["Dandelion Field"] = Vector3.new(0, 0, 0),
    ["Mushroom Field"] = Vector3.new(0, 0, 0),
    ["Clover Field"] = Vector3.new(0, 0, 0),
-   ["Blue Flower Field"] = Vector3.new(0, 0, 0)
+   ["Blue Flower Field"] = Vector3.new(0, 0, 0),
+   ["Spider Field"] = Vector3.new(0, 0, 0),
+   ["Strawberry Field"] = Vector3.new(0, 0, 0),
+   ["Bamboo Field"] = Vector3.new(0, 0, 0)
 }
 
 
@@ -135,7 +138,10 @@ local Dropdown = Tab:CreateDropdown({
       "Dandelion Field",
       "Mushroom Field",
       "Clover Field",
-      "Blue Flower Field"
+      "Blue Flower Field",
+      "Spider Field",
+      "Strawberry Field",
+      "Bamboo Field"
    },
    CurrentOption = "Sunflower Field",
    Flag = "FarmTeleport",
