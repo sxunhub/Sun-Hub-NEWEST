@@ -1,34 +1,24 @@
-local teleport_table = {
-    ["Sunflower Field"] = Vector3.new(-208.951294, 1.5, 176.579224, 1,0, 0, 0, 1, 0, 0, 0, 1)
-}
-
-local tween_s = game:GetService('TweenService')
-local tweeninfo = TweenInfo.new(2.3,Enum.EasingStyle.Linear)
-
-local lp = game.Players.LocalPlayer
-
 getgenv().SecureMode = true
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
-
-local Window = Rayfield:CreateWindow({
+local lib = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+local Window = lib:CreateWindow({
    Name = "Sun Hub | v1.0.0.0",
-   LoadingTitle = "",
-   LoadingSubtitle = "By Sun",
+   LoadingTitle = "Sun Hub | Thank You For Using Our Script!",
+   LoadingSubtitle = "By Sun Hub Developers.",
    ConfigurationSaving = {
-      Enabled = true,
-      FolderName = nil, 
+      Enabled = false,
+      FolderName = nil,
       FileName = "Sun Hub"
    },
    Discord = {
       Enabled = true,
-      Invite = "TYMWRGa5mm", 
-      RememberJoins = true 
+      Invite = "PN3eBppX7W",
+      RememberJoins = true
    },
    KeySystem = true,
    KeySettings = {
-      Title = "Sun Hub",
-      Subtitle = "Key System",
-      Note = "Join the discord (discord.gg/TYMWRGa5mm)",
+      Title = "Sun Hub | v1.0.0.0",
+      Subtitle = "Sun Hub Key System",
+      Note = "Join the discord (discord.gg/PN3eBppX7W)",
       FileName = "Sun Hub Key",
       SaveKey = false,
       GrabKeyFromSite = false,
@@ -36,102 +26,115 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-Rayfield:Notify({
-   Title = "Sun Hub | Notification",
-   Content = "Join Our Discord Server! Link: discord.gg/TYMWRGa5mm",
-   Duration = 6.5,
-   Image = 4483362458,
-   Actions = { 
-      Ignore = {
-         Name = "Okay!",
-         Callback = function()
-         print("discord.gg/TYMWRGa5mm")
-      end
-   },
-},
-})
-
-local AutoFarmTab = Window:CreateTab("AutoFarm", 4483362458) -- Title, Image
-local Section = AutoFarmTab:CreateSection("Choose A Field!")
-_G.Type = "Sunflower Field"
-local Dropdown = AutoFarmTab:CreateDropdown({
-   Name = "Choose A Field You Want To AutoFarm In.",
-   Options = {"Sunflower Field","Dandelion Field","Mushroom Field","Clover Field","Blue Flower Field"},
-   CurrentOption = "Sunflower Field",
-   Flag = "Dropdown1", 
-   Callback = function(key)
-       _G.Type = key
-   end,
-})
-
-  _G.Type = "Sunflower Field"
-
-AutoFarmTab:CreateToggle({
-  Name = "Auto Farm 🛠️",
-  CurrentValue = false,
-  Flag = "Auto Farm",
-
-  Callback = function(key)
-      _G.Type = key
-    local Character = lp.Character
-    local Hrp = Character:FindFirstChild"HumanoidRootPart"
-    if key then
-      if Character and Hrp then
-          local goal = {
-            teleport_table[_G.Type]
-          }
-           local tween = tween_s:Create(Hrp, tweeninfo, goal)
-           tween:Play()
-        end
-      end
-  end,
-})
-
-   local SprinklerToggle = AutoFarmTab:CreateToggle({
-   Name = "Auto Place Sprinkler 💧",
-   CurrentValue = false,
-   Flag = "Toggle1",
-   Callback = function(Option)
-
-
-   end,
-})
-
-
+local Tab = Window:CreateTab("Main", 4483362458)
 local MiscTab = Window:CreateTab("Misc", 4483362458)
-local ColorPicker = MiscTab:CreateColorPicker({
-    Name = "Color Picker",
-    Color = Color3.fromRGB(255,255,255),
-    Flag = "ColorPicker1", 
-    Callback = function(Value)
-        
-        
-    end
-})
+MiscTab:CreateSection("Character")
+Tab:CreateSection("AutoFarm")
 
-local Slider = MiscTab:CreateSlider({
-   Name = "Change WalkSpeed",
+-- Auto Farm Variables --
+_G.FARM = {
+   state = false,
+   speed = 10
+}
+_G.FARM.tweeninfo = TweenInfo.new(_G.FARM.speed, Enum.EasingStyle.Linear)
+
+-- Teleport Variables --
+_G.Location = "Sunflower Field"
+_G.TELEPORT = {
+   ["Sunflower Field"] = Vector3.new(-212.238, 4.49415, 182.679),
+   ["Dandelion Field"] = Vector3.new(0, 0, 0),
+   ["Mushroom Field"] = Vector3.new(0, 0, 0),
+   ["Clover Field"] = Vector3.new(0, 0, 0),
+   ["Blue Flower Field"] = Vector3.new(0, 0, 0)
+}
+
+-- Services --
+local Players = game:GetService"Players"
+local TweenService = game:GetService"TweenService"
+
+-- User --
+local Player = Players.LocalPlayer
+local Character = Player.Character
+local Humanoid = Character.Humanoid
+
+-- Character Section --
+local WalkSpeed = MiscTab:CreateSlider({
+   Name = "WalkSpeed",
    Range = {16, 80},
    Increment = 1,
-   Suffix = "WalkSpeed",
+   Suffix = "Walk Speed",
    CurrentValue = 16,
-   Flag = "Slider1",
-   Callback = function(SpeedValue)
-       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = SpeedValue
+   Flag = "WalkSpeed",
+   Callback = function(number)
+      Humanoid.WalkSpeed = number
    end,
 })
 
-local JumpSlider = MiscTab:CreateSlider({
-    Name = "Change Jump Height",
-    Range = {6, 30},
-    Increment = 1,
-    Suffix = "Jump Height",
-    CurrentValue = 6,
-    Flag = "Slider2",
-    Callback = function(JumpValue)
-        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpValue
+local JumpPower = MiscTab:CreateSlider({
+   Name = "JumpHeight",
+   Range = {5, 30},
+   Increment = 1,
+   Suffix = "Jump Height",
+   CurrentValue = 5,
+   Flag = "JumpPower",
+   Callback = function(number)
+      Humanoid.JumpHeight = number
+   end,
+})
 
-    end,
- })
+-- Farm Section --
+local Dropdown = Tab:CreateDropdown({
+   Name = "Teleport to field",
+   Options = {
+      "Sunflower Field",
+      "Dandelion Field",
+      "Mushroom Field",
+      "Clover Field",
+      "Blue Flower Field"
+   },
+   CurrentOption = "Sunflower Field",
+   Flag = "FarmTeleport",
+   Callback = function(key)
+      _G.Location = key
+   end,
+})
 
-Rayfield:LoadConfiguration()
+local Farm = Tab:CreateToggle({
+   Name = "Auto Farm",
+   CurrentValue = _G.FARM.state,
+   Flag = "AutoFarm",
+   Callback = function(state)
+      _G.FARM.state = state
+      while _G.FARM.state and task.wait() do
+         local tween = TweenService:Create(Character.HumanoidRootPart, _G.FARM.tweeninfo, {CFrame = CFrame.new(_G.TELEPORT[_G.Location])})
+         tween:Play()
+         tween.Completed:Wait()
+      end
+   end,
+})
+
+local AutoDig = Tab:CreateToggle({
+   Name = "Auto Dig",
+   CurrentValue = _G.FARM.state,
+   Flag = "AutoFarm",
+   Callback = function(state)
+                 if game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool'):FindFirstChild('ClientScriptMouse') then
+            pcall(function()getsenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart()
+         end)
+    end
+   end,
+})
+
+local AutoSprinkler = Tab:CreateToggle({
+   Name = "Auto Place Sprinkler",
+   CurrentValue = _G.FARM.state,
+   Flag = "AutoFarm",
+   Callback = function(state)
+      _G.FARM.state = state
+      while _G.FARM.state and task.wait() do
+         local tween = TweenService:Create(Character.HumanoidRootPart, _G.FARM.tweeninfo, {CFrame = CFrame.new(_G.TELEPORT[_G.Location])})
+         tween:Play()
+         tween.Completed:Wait()
+      end
+   end,
+})
