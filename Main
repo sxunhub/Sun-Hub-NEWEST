@@ -194,12 +194,14 @@ local AvoidMobs = CombatTab:CreateToggle({
    CurrentValue = false,
    Flag = "AvoidMobs",
    Callback = function(state)
-      for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
-         if v:FindFirstChild("Head") then
-             if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and Humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
-                 game.Players.LocalPlayer.Character.Humanoid.Jump = true
-             end
+       function avoidmob()
+    for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
+        if v:FindFirstChild("Head") then
+            if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and api.humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
+                game.Players.LocalPlayer.Character.Humanoid.Jump = true
+            end
          end
       end
-   end,
+   end
+ end,
 })
