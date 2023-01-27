@@ -132,7 +132,7 @@ local JumpPower = MiscTab:CreateSlider({
 
 
 local Dropdown = Tab:CreateDropdown({
-   Name = "Teleport to field",
+   Name = "Choose A Field To AutoFarm In",
    Options = {
       "Sunflower Field",
       "Dandelion Field",
@@ -170,7 +170,7 @@ local AutoDig = Tab:CreateToggle({
    Flag = "AutoDig",
    Callback = function(state)
               if game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool'):FindFirstChild('ClientScriptMouse') then
-            pcall(function()getsenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart()end)
+            pcall(function(state)getgenv(game.Players.LocalPlayer.Character:FindFirstChildOfClass('Tool').ClientScriptMouse).collectStart()end)
          end 
     end
 })
@@ -196,7 +196,7 @@ local AvoidMobs = CombatTab:CreateToggle({
    Callback = function(state)
       for i,v in next, game:GetService("Workspace").Monsters:GetChildren() do
          if v:FindFirstChild("Head") then
-             if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
+             if (v.Head.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 35 and Humanoid():GetState() ~= Enum.HumanoidStateType.Freefall then
                  game.Players.LocalPlayer.Character.Humanoid.Jump = true
              end
          end
